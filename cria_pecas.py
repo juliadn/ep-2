@@ -21,4 +21,5 @@ def cria_pecas():
             lista_pecas.append([0, 0])
         i += 1
     random.shuffle(lista_pecas)
+    
     return lista_pecas
