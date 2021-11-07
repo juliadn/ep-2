@@ -1,7 +1,6 @@
 from time import sleep
 
 
-
 #chamando todas as funções anteriores para serem usadas.
 from adicionanamesa import adiciona_na_mesa
 from cria_pecas import cria_pecas
@@ -40,21 +39,35 @@ pecas_jogaveis = iniciando['jogadores'][0]
 
 print('Mesa: \n', iniciando['mesa'], '\n')
 print('Suas peças: \n', pecas_jogaveis, '\n')
-qual_peca = int(input('Escolha a peça: ')) 
+qual_peca = int(input('Escolha a peça: '))
+print() 
 analise = posicoes_possiveis(iniciando['mesa'], pecas_jogaveis)
 
-if (qual_peca) in analise:
+if qual_peca in analise:
     situacao = adiciona_na_mesa(pecas_jogaveis[qual_peca - 1], iniciando['mesa'])
     del(pecas_jogaveis[qual_peca - 1])
 
 #pega do monte    
 elif qual_peca not in analise:
-        for c3 in range(0, len(pecas_jogaveis)-1):
-            if pecas_jogaveis[c3] not in analise:
-                a = False
-            else:
-                print('Erro! Peça não encaixa no tabuleiro, tente outra \n \n')
-                a = True
+    test = True
+    while test == True:
+        i = 0
+        if pecas_jogaveis[i] not in analise:
+            a = False
+            test == False
+        else:
+            print('Erro! Peça não encaixa no tabuleiro, tente outra \n \n')
+            a = True
+            print('Suas peças: \n \n', pecas_jogaveis, '\n \n')
+            while a == True:
+                qual_peca = int(input('Escolha a peça: ')) 
+                analise = posicoes_possiveis(iniciando['mesa'], pecas_jogaveis)
+                if qual_peca in analise:
+                    situacao = adiciona_na_mesa(pecas_jogaveis[qual_peca - 1], iniciando['mesa'])
+                    del(pecas_jogaveis[qual_peca - 1])
+                    print('Situação da mesa: \n \n ', situacao, '\n \n')
+                    test = True
+                    i += 1
 
         if a == False:
 
@@ -66,7 +79,8 @@ elif qual_peca not in analise:
             else:
                 print('Você não possui peças e não possui peças no monte, passou a vez.')
 
-while True:
+sit = True
+while sit == True:
 
     for c in range (1, numero_de_jogadores):
         print('Vez do jogador {}'.format(c + 1), '\n')
@@ -80,11 +94,13 @@ while True:
                 
             else:
                 print('\n Jogador {} pegando peças do monte...' .format(c + 1))
+                sleep(2)
                 if len(iniciando['monte']) > 0:
                     iniciando['jogadores'][c].append(iniciando['monte'][0])
                     del(iniciando['monte'][0])
                 else:
                     print('jogador{} não possui peças e não possui peças no monte, passou a vez.\n' .format(c+1))
+                    sleep(2)
         print('Situação da mesa: \n \n ', situacao, '\n \n')
         sleep(1)
                 
@@ -92,18 +108,31 @@ while True:
     print('Suas peças: \n \n', pecas_jogaveis, '\n \n')
     qual_peca = int(input('Escolha a peça: ')) 
     analise = posicoes_possiveis(situacao, pecas_jogaveis)
-    if (qual_peca) in analise:
+    if qual_peca in analise:
         situacao = adiciona_na_mesa(pecas_jogaveis[qual_peca - 1], situacao)
         del(pecas_jogaveis[qual_peca - 1])
         print('Situação da mesa: \n \n ', situacao, '\n \n')
 
     elif qual_peca not in analise:
-        for c in range(0, len(pecas_jogaveis)-1):
-            if pecas_jogaveis[c] not in analise:
+        test2 = True
+        while test2 == True:
+            i2 = 0
+            if pecas_jogaveis[i2] not in analise:
                 a = False
+                test2 = False
             else:
                 print('Erro! Peça não encaixa no tabuleiro, tente outra \n \n')
                 a = True
+                print('Suas peças: \n \n', pecas_jogaveis, '\n \n')
+                while a == True:
+                    qual_peca = int(input('Escolha a peça: ')) 
+                    analise = posicoes_possiveis(situacao, pecas_jogaveis)
+                    if qual_peca in analise:
+                        situacao = adiciona_na_mesa(pecas_jogaveis[qual_peca - 1], situacao)
+                        del(pecas_jogaveis[qual_peca - 1])
+                        print('Situação da mesa: \n \n ', situacao, '\n \n')
+                        test2 = True
+                        i2 += 1
 
         if a == False:
 
@@ -117,3 +146,6 @@ while True:
             
     print('Situação da mesa: \n', situacao, '\n \n')
     sleep(1)
+    
+
+
