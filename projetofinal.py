@@ -1,3 +1,7 @@
+from time import sleep
+
+
+
 #chamando todas as funções anteriores para serem usadas.
 from adicionanamesa import adiciona_na_mesa
 from cria_pecas import cria_pecas
@@ -28,30 +32,88 @@ while True:
 #chamando a função que dependerá do input que derem
 iniciando = inicia_jogo(numero_de_jogadores, cria_pecas())
 
-#para saber quais peças aparecerão para o player
+#peças do jogador
 pecas_jogaveis = iniciando['jogadores'][0]
 
 
 #jogando
 
-print('Mesa: ', iniciando['mesa'])
-print(pecas_jogaveis)
-qual_peca = int(input('Escolha a peça: ')) - 1
+print('Mesa: \n', iniciando['mesa'], '\n')
+print('Suas peças: \n', pecas_jogaveis, '\n')
+qual_peca = int(input('Escolha a peça: ')) 
 analise = posicoes_possiveis(iniciando['mesa'], pecas_jogaveis)
 
-if (qual_peca + 1) in analise:
-    situacao = adiciona_na_mesa(pecas_jogaveis[qual_peca], iniciando['mesa'])
-    del(pecas_jogaveis[qual_peca])
-else:
-    if len(iniciando['monte']) > 0:
-        pecas_jogaveis.append(iniciando['monte'][0])
-    else:
-        print('Você não possui peças e não possui peças no monte, passou a vez.')
+if (qual_peca) in analise:
+    situacao = adiciona_na_mesa(pecas_jogaveis[qual_peca - 1], iniciando['mesa'])
+    del(pecas_jogaveis[qual_peca - 1])
 
+#pega do monte    
+elif qual_peca not in analise:
+        for c3 in range(0, len(pecas_jogaveis)-1):
+            if pecas_jogaveis[c3] not in analise:
+                a = False
+            else:
+                print('Erro! Peça não encaixa no tabuleiro, tente outra \n \n')
+                a = True
+
+        if a == False:
+
+            if len(iniciando['monte']) > 0:
+                print('Pegando do monte...')
+                sleep(2)
+                pecas_jogaveis.append(iniciando['monte'][0])
+                del(iniciando['monte'][0])
+            else:
+                print('Você não possui peças e não possui peças no monte, passou a vez.')
 
 while True:
-    print('Mesa: ', situacao)
-    print(pecas_jogaveis)
-    qual_peca = int(input('Escolha a peça: ')) -1
-    situacao = adiciona_na_mesa(pecas_jogaveis[qual_peca], situacao)
-    del(pecas_jogaveis[qual_peca])
+
+    for c in range (1, numero_de_jogadores):
+        print('Vez do jogador {}'.format(c + 1), '\n')
+        sleep(2)
+        for c2 in range(0, 6):
+            analiseplayers = posicoes_possiveis(situacao, iniciando['jogadores'][c])
+            if c2 in analiseplayers:
+                situacao = adiciona_na_mesa(iniciando['jogadores'][c][c2], situacao)
+                del(iniciando['jogadores'][c][c2])
+                break
+                
+            else:
+                print('\n Jogador {} pegando peças do monte...' .format(c + 1))
+                if len(iniciando['monte']) > 0:
+                    iniciando['jogadores'][c].append(iniciando['monte'][0])
+                    del(iniciando['monte'][0])
+                else:
+                    print('jogador{} não possui peças e não possui peças no monte, passou a vez.\n' .format(c+1))
+        print('Situação da mesa: \n \n ', situacao, '\n \n')
+        sleep(1)
+                
+
+    print('Suas peças: \n \n', pecas_jogaveis, '\n \n')
+    qual_peca = int(input('Escolha a peça: ')) 
+    analise = posicoes_possiveis(situacao, pecas_jogaveis)
+    if (qual_peca) in analise:
+        situacao = adiciona_na_mesa(pecas_jogaveis[qual_peca - 1], situacao)
+        del(pecas_jogaveis[qual_peca - 1])
+        print('Situação da mesa: \n \n ', situacao, '\n \n')
+
+    elif qual_peca not in analise:
+        for c in range(0, len(pecas_jogaveis)-1):
+            if pecas_jogaveis[c] not in analise:
+                a = False
+            else:
+                print('Erro! Peça não encaixa no tabuleiro, tente outra \n \n')
+                a = True
+
+        if a == False:
+
+            if len(iniciando['monte']) > 0:
+                print('Pegando do monte...')
+                sleep(2)
+                pecas_jogaveis.append(iniciando['monte'][0])
+                del(iniciando['monte'][0])
+            else:
+                print('Você não possui peças e não possui peças no monte, passou a vez.')
+            
+    print('Situação da mesa: \n', situacao, '\n \n')
+    sleep(1)
